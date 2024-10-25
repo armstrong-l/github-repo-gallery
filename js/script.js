@@ -1,6 +1,9 @@
 // Element where profile information will appear
 const overview = document.querySelector(".overview");
 
+// Unordered list for repos
+const repoUnorderedList = document.querySelector(".repo-list");
+
 const username = "armstrong-l";
 
 const userFetch = async function() {
@@ -28,3 +31,20 @@ const userDisplay = function(userSelect) {
         overview.append(div);
         };
 
+const repoFetch = async function() {
+    repoRes = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    const repoList = await repoRes.json();
+    console.log(repoList);
+    reposDisplay(repoList);
+};
+
+const reposDisplay = function(repoList) {
+for (repo of repoList) {
+    let li = document.createElement("li");
+    li.classList.add("repo");
+    li.innerHTML = `<h3>${repo.name}</h3>`
+    repoUnorderedList.append(li);
+}
+};
+
+repoFetch();
